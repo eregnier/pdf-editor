@@ -234,10 +234,10 @@ body {
   background: #dc2626;
 }
 
-/* 20 pt to the right of that same corner, so the two buttons never overlap. */
+/* Left of the delete button, 10 pt of gap, above the corner as well. */
 .object .duplicate {
   left: 100%;
-  margin-left: 20px;
+  margin-left: -40px;
   background: var(--accent);
 }
 
