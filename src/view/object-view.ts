@@ -154,6 +154,11 @@ function createBody(object: PdfObject): HTMLElement {
     image.draggable = false;
     return image;
   }
+  if (object.kind === 'rectangle') {
+    const rectangle = document.createElement('div');
+    rectangle.className = 'rectangle';
+    return rectangle;
+  }
   const text = document.createElement('div');
   text.className = 'text';
   text.textContent = object.text;

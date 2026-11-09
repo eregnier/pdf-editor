@@ -55,6 +55,23 @@ describe('exportPdf', () => {
     expect(blob.size).toBeGreaterThan(1000);
   });
 
+  it('paints white rectangles over the page', async () => {
+    const source = await blankSource(1);
+    let scene = emptyScene(1);
+    scene = addObject(scene, 0, {
+      id: 'erase',
+      kind: 'rectangle',
+      x: 10,
+      y: 10,
+      width: 120,
+      height: 40,
+    });
+    const blob = await exportPdf(source, scene);
+    const output = await PDFDocument.load(await blob.arrayBuffer());
+    expect(output.getPageCount()).toBe(1);
+    expect(blob.size).toBeGreaterThan(500);
+  });
+
   it('produces a document pdf readers can open', async () => {
     const source = await blankSource(1);
     const blob = await exportPdf(source, emptyScene(1));

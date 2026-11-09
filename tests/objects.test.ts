@@ -1,11 +1,27 @@
 import { describe, expect, it } from 'vitest';
 import {
   clampFontSize,
+  createRectangle,
   createText,
   DEFAULT_FONT_SIZE,
+  DEFAULT_RECTANGLE_HEIGHT,
+  DEFAULT_RECTANGLE_WIDTH,
   MAX_FONT_SIZE,
   MIN_FONT_SIZE,
 } from '../src/model/objects';
+
+describe('createRectangle', () => {
+  it('starts at the default eraser size', () => {
+    const rectangle = createRectangle(5, 6);
+    expect(rectangle).toMatchObject({
+      kind: 'rectangle',
+      x: 5,
+      y: 6,
+      width: DEFAULT_RECTANGLE_WIDTH,
+      height: DEFAULT_RECTANGLE_HEIGHT,
+    });
+  });
+});
 
 describe('createText', () => {
   it('uses the default font size when none is given', () => {

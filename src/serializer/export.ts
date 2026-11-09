@@ -43,6 +43,15 @@ export async function exportPdf(source: PdfSource, scene: Scene): Promise<Blob> 
         });
       } else if (object.kind === 'text') {
         await drawText(page, object, pageHeight, document, fonts);
+      } else {
+        // White rectangle: nothing underneath it survives, which is the eraser.
+        page.drawRectangle({
+          x: object.x,
+          y: pageHeight - object.y - object.height,
+          width: object.width,
+          height: object.height,
+          color: rgb(1, 1, 1),
+        });
       }
     }
   }

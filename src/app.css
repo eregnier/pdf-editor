@@ -142,7 +142,8 @@ body {
 }
 
 .object img,
-.object .text {
+.object .text,
+.object .rectangle {
   display: block;
   width: 100%;
   height: 100%;
@@ -151,6 +152,10 @@ body {
 .object img {
   object-fit: fill;
   pointer-events: none;
+}
+
+.object .rectangle {
+  background: var(--paper);
 }
 
 .object .text {

@@ -30,7 +30,12 @@ export interface TextObject extends BaseObject {
   font: TextFont;
 }
 
-export type PdfObject = ImageObject | TextObject;
+/** Opaque white box: the cheap eraser, painted over whatever is underneath. */
+export interface RectangleObject extends BaseObject {
+  kind: 'rectangle';
+}
+
+export type PdfObject = ImageObject | TextObject | RectangleObject;
 
 /** Smallest box a user can resize an object to, in points. */
 export const MIN_SIZE = 8;
@@ -39,6 +44,9 @@ export const MIN_SIZE = 8;
 export const MIN_FONT_SIZE = 4;
 export const MAX_FONT_SIZE = 200;
 export const DEFAULT_FONT_SIZE = 16;
+
+export const DEFAULT_RECTANGLE_WIDTH = 160;
+export const DEFAULT_RECTANGLE_HEIGHT = 60;
 
 const TEXT_WIDTH = 180;
 const TEXT_LINE_HEIGHT = 1.4;
@@ -61,6 +69,17 @@ export function createText(
     size: fontSize,
     lineHeight: TEXT_LINE_HEIGHT,
     font,
+  };
+}
+
+export function createRectangle(x: number, y: number): RectangleObject {
+  return {
+    id: crypto.randomUUID(),
+    kind: 'rectangle',
+    x,
+    y,
+    width: DEFAULT_RECTANGLE_WIDTH,
+    height: DEFAULT_RECTANGLE_HEIGHT,
   };
 }
 

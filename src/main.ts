@@ -2,6 +2,7 @@ import './app.css';
 import { openPdf, type PdfDocumentSource } from './model/pdf-document';
 import {
   clampFontSize,
+  createRectangle,
   createText,
   DEFAULT_FONT_SIZE,
   MIN_SIZE,
@@ -30,6 +31,7 @@ const ui = {
   fileImage: element<HTMLInputElement>('file-image'),
   labelImage: element<HTMLElement>('label-image'),
   addText: element<HTMLButtonElement>('add-text'),
+  addRectangle: element<HTMLButtonElement>('add-rectangle'),
   font: element<HTMLSelectElement>('font'),
   size: element<HTMLInputElement>('size'),
   save: element<HTMLButtonElement>('save'),
@@ -60,7 +62,9 @@ async function open(file: File): Promise<void> {
   ui.hint.hidden = true;
   status(`PDF ouvert : ${source.pageCount} page(s)`);
   ui.labelImage.setAttribute('aria-disabled', 'false');
-  for (const control of [ui.addText, ui.font, ui.size, ui.save]) control.disabled = false;
+  for (const control of [ui.addText, ui.addRectangle, ui.font, ui.size, ui.save]) {
+    control.disabled = false;
+  }
   view = await createPagesView(ui.pages, source, {
     onSelect: select,
     onCommit: commit,
@@ -210,6 +214,10 @@ ui.addText.addEventListener('click', () => {
   addToVisiblePage(
     createText(24, 24, ui.font.value as TextFont, Number(ui.size.value) || DEFAULT_FONT_SIZE),
   );
+});
+
+ui.addRectangle.addEventListener('click', () => {
+  addToVisiblePage(createRectangle(24, 24));
 });
 
 ui.size.addEventListener('change', () => setFontSize(ui.size.value));
