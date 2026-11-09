@@ -1,6 +1,13 @@
 import './app.css';
 import { openPdf, type PdfDocumentSource } from './model/pdf-document';
-import { createText, type PdfObject, type TextFont } from './model/objects';
+import {
+  clampFontSize,
+  createText,
+  DEFAULT_FONT_SIZE,
+  MIN_SIZE,
+  type PdfObject,
+  type TextFont,
+} from './model/objects';
 import {
   addObject,
   emptyScene,
@@ -24,6 +31,7 @@ const ui = {
   labelImage: element<HTMLElement>('label-image'),
   addText: element<HTMLButtonElement>('add-text'),
   font: element<HTMLSelectElement>('font'),
+  size: element<HTMLInputElement>('size'),
   save: element<HTMLButtonElement>('save'),
   status: element<HTMLElement>('status'),
 };
@@ -52,7 +60,7 @@ async function open(file: File): Promise<void> {
   ui.hint.hidden = true;
   status(`PDF ouvert : ${source.pageCount} page(s)`);
   ui.labelImage.setAttribute('aria-disabled', 'false');
-  for (const control of [ui.addText, ui.font, ui.save]) control.disabled = false;
+  for (const control of [ui.addText, ui.font, ui.size, ui.save]) control.disabled = false;
   view = await createPagesView(ui.pages, source, {
     onSelect: select,
     onCommit: commit,
@@ -80,7 +88,30 @@ function render(): void {
 
 function select(id: string | null): void {
   selectedId = id;
+  const located = id ? findObject(scene, id) : undefined;
+  // Keep the size picker in sync with the text object being edited.
+  if (located?.object.kind === 'text') {
+    ui.size.value = String(located.object.size);
+  }
   render();
+}
+
+/**
+ * Font size applies to the selected text object, and becomes the default for the
+ * next one. The box is scaled with it so the text is neither clipped nor left
+ * with a huge empty area.
+ */
+function setFontSize(raw: string): void {
+  const size = clampFontSize(Number(raw));
+  ui.size.value = String(size);
+  const located = selectedId ? findObject(scene, selectedId) : undefined;
+  if (located?.object.kind !== 'text' || located.object.size === size) return;
+  const text = located.object;
+  commit({
+    ...text,
+    size,
+    height: Math.max(MIN_SIZE, Math.round((text.height * size) / text.size)),
+  });
 }
 
 function commit(object: PdfObject): void {
@@ -176,8 +207,12 @@ async function addImageFile(file: File): Promise<void> {
 
 
 ui.addText.addEventListener('click', () => {
-  addToVisiblePage(createText(24, 24, ui.font.value as TextFont));
+  addToVisiblePage(
+    createText(24, 24, ui.font.value as TextFont, Number(ui.size.value) || DEFAULT_FONT_SIZE),
+  );
 });
+
+ui.size.addEventListener('change', () => setFontSize(ui.size.value));
 
 ui.save.addEventListener('click', () => void save());
 

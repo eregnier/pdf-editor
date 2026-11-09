@@ -25,6 +25,17 @@
         <input id="file-image" class="ghost" type="file" accept="image/*" />
       </label>
       <button id="add-text" type="button" disabled>Texte</button>
+      <input
+        id="size"
+        class="select size"
+        type="number"
+        min="4"
+        max="200"
+        step="1"
+        value="16"
+        disabled
+        aria-label="Taille de police"
+      />
       <select id="font" class="select" disabled aria-label="Police">
         <option value="Helvetica">Helvetica</option>
         <option value="Times-Roman">Times</option>

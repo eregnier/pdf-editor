@@ -80,6 +80,10 @@ body {
   border-radius: 6px;
 }
 
+.toolbar .size {
+  width: 64px;
+}
+
 .toolbar .name {
   flex: 1 1 160px;
   overflow: hidden;
