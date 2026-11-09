@@ -1,0 +1,239 @@
+/* Hand written, no framework: a toolbar, a column of page frames and the objects
+   laid over them. Everything is sized in PDF points inside the overlay, which is
+   then scaled by a CSS transform. */
+
+:root {
+  --ink: #111827;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #2563eb;
+  --paper: #ffffff;
+  --canvas: #eef1f5;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font: 14px/1.45 system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--canvas);
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 16px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
+.toolbar button,
+.toolbar .button {
+  padding: 6px 12px;
+  font: inherit;
+  color: #fff;
+  background: var(--accent);
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.toolbar button:disabled,
+.toolbar .button[aria-disabled='true'] {
+  background: var(--line);
+  color: var(--muted);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* The file input is transparent and covers its label: clicking it is a real
+   activation, which the native file chooser requires. */
+.toolbar .button {
+  position: relative;
+  overflow: hidden;
+}
+
+.toolbar .ghost {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.toolbar .select {
+  padding: 6px 8px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.toolbar .name {
+  flex: 1 1 160px;
+  overflow: hidden;
+  color: var(--muted);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 12px 60px;
+}
+
+.page {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  background: var(--paper);
+  box-shadow: 0 1px 5px rgb(15 23 42 / 18%);
+}
+
+.frame canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  transform-origin: top left;
+}
+
+.frame canvas {
+  position: relative;
+  z-index: 0;
+}
+
+.object {
+  position: absolute;
+  outline: 1px dashed transparent;
+  cursor: move;
+}
+
+.object.selected {
+  outline-color: var(--accent);
+}
+
+.object img,
+.object .text {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.object img {
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.object .text {
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-word;
+  cursor: move;
+}
+
+.object .text[contenteditable='true'] {
+  cursor: text;
+  outline: 1px solid var(--accent);
+  background: rgb(255 255 255 / 85%);
+}
+
+.object .handle {
+  position: absolute;
+  display: none;
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  border: 1px solid var(--paper);
+  border-radius: 50%;
+}
+
+.object.selected .handle {
+  display: block;
+}
+
+.handle-nw {
+  top: -5px;
+  left: -5px;
+  cursor: nwse-resize;
+}
+
+.handle-ne {
+  top: -5px;
+  right: -5px;
+  cursor: nesw-resize;
+}
+
+.handle-sw {
+  bottom: -5px;
+  left: -5px;
+  cursor: nesw-resize;
+}
+
+.handle-se {
+  right: -5px;
+  bottom: -5px;
+  cursor: nwse-resize;
+}
+
+.object .remove {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  display: none;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1;
+  color: #fff;
+  background: #dc2626;
+  border: 1px solid var(--paper);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.object.selected .remove {
+  display: block;
+}
+
+.status {
+  flex: 1 0 auto;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.status.failed {
+  color: #b91c1c;
+}
+
+.hint {
+  margin: 0;
+  padding: 40px 16px;
+  color: var(--muted);
+  text-align: center;
+}

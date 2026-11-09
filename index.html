@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Everything is served from this origin: no remote script, no exfiltration
+         path. 'unsafe-inline' for styles is needed by the inline style
+         attributes that position objects over the page. -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <link rel="icon" href="data:," />
+    <title>PDF editor</title>
+  </head>
+  <body>
+    <header class="toolbar">
+      <label class="button">
+        Ouvrir un PDF
+        <input id="file-pdf" type="file" accept="application/pdf" hidden />
+      </label>
+      <span id="pdf-name" class="name"></span>
+      <label id="label-image" class="button" aria-disabled="true">
+        Image
+        <input id="file-image" class="ghost" type="file" accept="image/*" />
+      </label>
+      <button id="add-text" type="button" disabled>Texte</button>
+      <select id="font" class="select" disabled aria-label="Police">
+        <option value="Helvetica">Helvetica</option>
+        <option value="Times-Roman">Times</option>
+        <option value="Courier">Courier</option>
+      </select>
+      <button id="save" type="button" disabled>Enregistrer</button>
+      <span id="status" class="status" role="status"></span>
+    </header>
+    <main id="pages" class="pages"></main>
+    <p id="hint" class="hint">Ouvre un PDF, ou dépose-le dans la fenêtre.</p>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
