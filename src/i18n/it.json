@@ -1,0 +1,22 @@
+{
+  "toolbar.open": "Apri un PDF",
+  "toolbar.image": "Immagine",
+  "toolbar.text": "Testo",
+  "toolbar.rectangle": "Rettangolo bianco",
+  "toolbar.save": "Salva",
+  "toolbar.saving": "Salvataggio…",
+  "toolbar.font": "Carattere",
+  "toolbar.size": "Dimensione testo",
+  "toolbar.language": "Lingua",
+  "hint.empty": "Apri un PDF o trascinalo nella finestra.",
+  "title.duplicate": "Duplica (Ctrl+D)",
+  "title.delete": "Elimina",
+  "status.pdfOpened": "PDF aperto: {count} pagina/e",
+  "status.imageImporting": "Importazione di {name}…",
+  "status.imageAdded": "Immagine aggiunta: {width}×{height} pt",
+  "status.imageFailed": "Importazione fallita: {type}",
+  "status.imageCancelled": "Selezione immagine annullata — trascina il file nella finestra",
+  "status.noDocument": "Apri un PDF prima di aggiungere un'immagine",
+  "status.exported": "PDF esportato ({size} KB)",
+  "status.exportFailed": "Esportazione non riuscita"
+}

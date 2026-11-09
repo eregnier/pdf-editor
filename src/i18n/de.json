@@ -1,0 +1,22 @@
+{
+  "toolbar.open": "PDF öffnen",
+  "toolbar.image": "Bild",
+  "toolbar.text": "Text",
+  "toolbar.rectangle": "Weißes Rechteck",
+  "toolbar.save": "Speichern",
+  "toolbar.saving": "Speichern…",
+  "toolbar.font": "Schrift",
+  "toolbar.size": "Textgröße",
+  "toolbar.language": "Sprache",
+  "hint.empty": "PDF öffnen oder in das Fenster ziehen.",
+  "title.duplicate": "Duplizieren (Strg+D)",
+  "title.delete": "Löschen",
+  "status.pdfOpened": "PDF geöffnet: {count} Seite(n)",
+  "status.imageImporting": "Importiere {name}…",
+  "status.imageAdded": "Bild hinzugefügt: {width}×{height} pt",
+  "status.imageFailed": "Import fehlgeschlagen: {type}",
+  "status.imageCancelled": "Bildauswahl abgebrochen – Datei in das Fenster ziehen",
+  "status.noDocument": "Öffne zuerst ein PDF",
+  "status.exported": "PDF exportiert ({size} KB)",
+  "status.exportFailed": "Export fehlgeschlagen"
+}

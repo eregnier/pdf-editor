@@ -16,15 +16,15 @@
   <body>
     <header class="toolbar">
       <label class="button">
-        Ouvrir un PDF
+        <span data-i18n="toolbar.open">Ouvrir un PDF</span>
         <input id="file-pdf" type="file" accept="application/pdf" hidden />
       </label>
       <span id="pdf-name" class="name"></span>
       <label id="label-image" class="button" aria-disabled="true">
-        Image
+        <span data-i18n="toolbar.image">Image</span>
         <input id="file-image" class="ghost" type="file" accept="image/*" />
       </label>
-      <button id="add-text" type="button" disabled>Texte</button>
+      <button id="add-text" type="button" disabled data-i18n="toolbar.text">Texte</button>
       <input
         id="size"
         class="select size"
@@ -34,19 +34,34 @@
         step="1"
         value="16"
         disabled
-        aria-label="Taille de police"
+        data-i18n-title="toolbar.size"
       />
-      <select id="font" class="select" disabled aria-label="Police">
+      <select id="font" class="select" disabled data-i18n-title="toolbar.font">
         <option value="Helvetica">Helvetica</option>
         <option value="Times-Roman">Times</option>
         <option value="Courier">Courier</option>
       </select>
-      <button id="add-rectangle" type="button" disabled>Rectangle blanc</button>
-      <button id="save" type="button" disabled>Enregistrer</button>
+      <button id="add-rectangle" type="button" disabled data-i18n="toolbar.rectangle">
+        Rectangle blanc
+      </button>
+      <button id="save" type="button" disabled data-i18n="toolbar.save">Enregistrer</button>
       <span id="status" class="status" role="status"></span>
+      <div class="language">
+        <button
+          id="language-toggle"
+          type="button"
+          class="button flag"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          data-i18n-title="toolbar.language"
+        ></button>
+        <div id="language-menu" class="language-menu" role="listbox" hidden></div>
+      </div>
     </header>
     <main id="pages" class="pages"></main>
-    <p id="hint" class="hint">Ouvre un PDF, ou dépose-le dans la fenêtre.</p>
+    <p id="hint" class="hint" data-i18n="hint.empty">
+      Ouvre un PDF, ou dépose-le dans la fenêtre.
+    </p>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

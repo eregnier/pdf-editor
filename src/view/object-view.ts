@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import { MIN_SIZE, type PdfObject, type TextObject } from '../model/objects';
 
 const FONT_STACK: Record<TextObject['font'], string> = {
@@ -53,8 +54,8 @@ export function createObjectView(
   const removeButton = document.createElement('button');
   removeButton.type = 'button';
   removeButton.className = 'remove';
-  removeButton.title = 'Supprimer';
-  removeButton.setAttribute('aria-label', 'Supprimer');
+  removeButton.title = t('title.delete');
+  removeButton.setAttribute('aria-label', t('title.delete'));
   removeButton.append(removeIcon());
   removeButton.addEventListener('click', () => context.onDelete(current.id));
   element.append(removeButton);
@@ -62,8 +63,8 @@ export function createObjectView(
   const duplicateButton = document.createElement('button');
   duplicateButton.type = 'button';
   duplicateButton.className = 'duplicate';
-  duplicateButton.title = 'Dupliquer (Ctrl+D)';
-  duplicateButton.setAttribute('aria-label', 'Dupliquer');
+  duplicateButton.title = t('title.duplicate');
+  duplicateButton.setAttribute('aria-label', t('title.duplicate'));
   duplicateButton.append(duplicateIcon());
   duplicateButton.addEventListener('click', () => context.onDuplicate(current.id));
   element.append(duplicateButton);

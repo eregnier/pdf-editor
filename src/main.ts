@@ -22,6 +22,8 @@ import { importImage } from './controller/import-image';
 import { bindKeyboard } from './controller/keyboard';
 import { createPagesView, type PagesView } from './view/pages-view';
 import { exportPdf } from './serializer/export';
+import { applyLanguage, t } from './i18n';
+import { mountLanguageMenu } from './view/language-menu';
 
 const ui = {
   pages: element<HTMLElement>('pages'),
@@ -36,6 +38,8 @@ const ui = {
   size: element<HTMLInputElement>('size'),
   save: element<HTMLButtonElement>('save'),
   status: element<HTMLElement>('status'),
+  languageToggle: element<HTMLButtonElement>('language-toggle'),
+  languageMenu: element<HTMLElement>('language-menu'),
 };
 
 let source: PdfDocumentSource | null = null;
@@ -60,7 +64,7 @@ async function open(file: File): Promise<void> {
   clipboard = null;
   ui.name.textContent = source.name;
   ui.hint.hidden = true;
-  status(`PDF ouvert : ${source.pageCount} page(s)`);
+  status(t('status.pdfOpened', { count: source.pageCount }));
   ui.labelImage.setAttribute('aria-disabled', 'false');
   for (const control of [ui.addText, ui.addRectangle, ui.font, ui.size, ui.save]) {
     control.disabled = false;
@@ -159,17 +163,17 @@ function addToVisiblePage(object: PdfObject): boolean {
 async function save(): Promise<void> {
   if (!source || saving) return;
   saving = true;
-  ui.save.textContent = 'Enregistrement…';
+  ui.save.textContent = t('toolbar.saving');
   try {
     const blob = await exportPdf(source, scene);
     download(blob, source.name);
-    status(`PDF exporté (${Math.round(blob.size / 1024)} Ko)`);
+    status(t('status.exported', { size: Math.round(blob.size / 1024) }));
   } catch (error) {
     console.error(error);
-    status("L'export a échoué", true);
+    status(t('status.exportFailed'), true);
   } finally {
     saving = false;
-    ui.save.textContent = 'Enregistrer';
+    ui.save.textContent = t('toolbar.save');
   }
 }
 
@@ -197,7 +201,7 @@ ui.fileImage.addEventListener('change', () => {
 // A dismissed or failed native dialog fires `cancel` and nothing else: without
 // this the click looks like it did nothing at all.
 ui.fileImage.addEventListener('cancel', () => {
-  status("Sélection d'image annulée — glisse le fichier dans la fenêtre", true);
+  status(t('status.imageCancelled'), true);
 });
 
 /**
@@ -206,17 +210,22 @@ ui.fileImage.addEventListener('cancel', () => {
  * "the button does nothing" is impossible to diagnose.
  */
 async function addImageFile(file: File): Promise<void> {
-  status(`Import de ${file.name}…`);
+  status(t('status.imageImporting', { name: file.name }));
   try {
     const image = await importImage(file);
     if (!addToVisiblePage(image)) {
-      status("Ouvre un PDF avant d'ajouter une image", true);
+      status(t('status.noDocument'), true);
       return;
     }
-    status(`Image ajoutée : ${Math.round(image.width)}×${Math.round(image.height)} pt`);
+    status(
+      t('status.imageAdded', {
+        width: Math.round(image.width),
+        height: Math.round(image.height),
+      }),
+    );
   } catch (error) {
     console.error('Import image impossible', file.name, file.type, error);
-    status(`Import impossible : ${file.type || file.name}`, true);
+    status(t('status.imageFailed', { type: file.type || file.name }), true);
   }
 }
 
@@ -266,6 +275,9 @@ window.addEventListener('drop', (event) => {
   if (file?.type === 'application/pdf') void open(file);
   else if (file?.type.startsWith('image/')) void addImageFile(file);
 });
+
+applyLanguage(document);
+mountLanguageMenu(ui.languageToggle, ui.languageMenu);
 
 bindKeyboard({
   copy() {
