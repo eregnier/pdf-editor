@@ -7,6 +7,7 @@ import { defineConfig } from 'vitest/config';
  * whole browser.
  */
 export default defineConfig({
-  build: { outDir: 'dist', target: 'es2022', sourcemap: true },
+  // No source map in the deployed build: it would publish the whole source.
+  build: { outDir: 'dist', target: 'es2022' },
   test: { include: ['tests/**/*.test.ts'] },
 });

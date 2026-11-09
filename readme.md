@@ -14,7 +14,11 @@ npm run dev      # dev server, http://localhost:5173
 npm run build    # production build in dist/
 npm run preview  # serve dist/
 npm test         # unit tests
+npm run deploy   # publish dist/ with wrangler (Cloudflare Workers)
 ```
+
+Deployment is a static asset worker: `wrangler.jsonc` serves `dist/` as is, with
+`not_found_handling: single-page-application`.
 
 ## What it does
 
