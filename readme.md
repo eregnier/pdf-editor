@@ -4,7 +4,7 @@ Edit a PDF in the browser: open it, add images, text boxes and white rectangles
 over the pages, then export the result. Everything happens locally — no upload,
 no server, no account.
 
-Live: https://pdf-editor-eqv.pages.dev/
+Live: https://pdf-editor.utop.workers.dev/
 
 ## Commands
 
