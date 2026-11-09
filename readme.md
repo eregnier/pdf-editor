@@ -58,6 +58,14 @@ tests/           scene, wrapping, export, translations
 - a dismissed native file dialog returns no file: drag and drop or a clipboard
   paste are the fallbacks
 
+## Credits
+
+This is a rewrite of the original [pdf-editor](https://github.com/ShizukuIchi/pdf-editor)
+by **ShizukuIchi** ([@ShizukuIchi](https://github.com/ShizukuIchi)) and its
+contributors, who designed the tool and its interaction model. The interface,
+the objects it manipulates and the workflows are theirs; the code here is a new
+TypeScript implementation.
+
 ## License
 
-MIT, see [LICENSE](LICENSE).
+MIT, see [LICENSE](LICENSE). Copyright (c) 2020 ShizukuIchi.
