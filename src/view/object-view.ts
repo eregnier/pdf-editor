@@ -54,7 +54,8 @@ export function createObjectView(
   removeButton.type = 'button';
   removeButton.className = 'remove';
   removeButton.title = 'Supprimer';
-  removeButton.textContent = '×';
+  removeButton.setAttribute('aria-label', 'Supprimer');
+  removeButton.append(removeIcon());
   removeButton.addEventListener('click', () => context.onDelete(current.id));
   element.append(removeButton);
 
@@ -178,16 +179,32 @@ function createBody(object: PdfObject): HTMLElement {
   return text;
 }
 
-/** Two overlapping squares: a glyph would depend on the system font. */
-function duplicateIcon(): SVGSVGElement {
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function svgIcon(): SVGSVGElement {
+  const svg = document.createElementNS(SVG_NS, 'svg');
   svg.setAttribute('viewBox', '0 0 16 16');
   svg.setAttribute('aria-hidden', 'true');
+  return svg;
+}
+
+/** Drawn, not typed: a glyph would depend on the system font and its baseline. */
+function removeIcon(): SVGSVGElement {
+  const svg = svgIcon();
+  const path = document.createElementNS(SVG_NS, 'path');
+  path.setAttribute('d', 'M4.5 4.5 11.5 11.5M11.5 4.5 4.5 11.5');
+  svg.append(path);
+  return svg;
+}
+
+/** Two overlapping squares: a glyph would depend on the system font. */
+function duplicateIcon(): SVGSVGElement {
+  const svg = svgIcon();
   for (const [x, y] of [
     [1.5, 1.5],
     [5.5, 5.5],
   ] as const) {
-    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    const rect = document.createElementNS(SVG_NS, 'rect');
     rect.setAttribute('x', String(x));
     rect.setAttribute('y', String(y));
     rect.setAttribute('width', '9');

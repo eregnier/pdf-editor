@@ -212,44 +212,43 @@ body {
 .object .remove,
 .object .duplicate {
   position: absolute;
-  top: -12px;
+  bottom: 100%;
   display: none;
   align-items: center;
   justify-content: center;
   width: 20px;
   height: 20px;
+  margin-bottom: 10px;
   padding: 0;
-  font-size: 13px;
-  line-height: 1;
   color: #fff;
   border: 1px solid var(--paper);
   border-radius: 50%;
   cursor: pointer;
 }
 
+/* Centred on the top-right corner, above it: the north-east handle stays
+   clickable. */
 .object .remove {
-  right: -12px;
+  left: 100%;
+  transform: translateX(-50%);
   background: #dc2626;
 }
 
-/* Floats outside the top-right corner: 20 px to the right and 10 px above it,
-   so the north-east handle stays clickable. */
+/* 20 pt to the right of that same corner, so the two buttons never overlap. */
 .object .duplicate {
-  top: auto;
-  right: auto;
-  bottom: 100%;
   left: 100%;
-  margin-bottom: 10px;
   margin-left: 20px;
   background: var(--accent);
 }
 
+.object .remove svg,
 .object .duplicate svg {
   width: 10px;
   height: 10px;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.6;
+  stroke-linecap: round;
 }
 
 .object.selected .remove,
