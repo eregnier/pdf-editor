@@ -20,6 +20,7 @@ export interface PagesViewOptions {
   onSelect(id: string | null): void;
   onCommit(object: PdfObject): void;
   onDelete(id: string): void;
+  onDuplicate(id: string): void;
 }
 
 interface PageEntry {
@@ -137,6 +138,7 @@ export async function createPagesView(
             onSelect: options.onSelect,
             onCommit: options.onCommit,
             onDelete: options.onDelete,
+            onDuplicate: options.onDuplicate,
           });
           entry.views.set(object.id, view);
           entry.overlay.append(view.element);

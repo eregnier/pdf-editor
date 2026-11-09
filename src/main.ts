@@ -69,6 +69,7 @@ async function open(file: File): Promise<void> {
     onSelect: select,
     onCommit: commit,
     onDelete: remove,
+    onDuplicate: duplicate,
   });
   render();
 }
@@ -120,6 +121,17 @@ function setFontSize(raw: string): void {
 
 function commit(object: PdfObject): void {
   scene = updateObject(scene, object.id, () => object);
+  render();
+}
+
+/** Same behaviour as Ctrl+D, shared by the shortcut and the object button. */
+function duplicate(id: string | null): void {
+  const located = id ? findObject(scene, id) : undefined;
+  if (!located) return;
+  const inserted = insertCopy(scene, located.page, located.object);
+  if (!inserted) return;
+  scene = inserted.scene;
+  selectedId = inserted.object.id;
   render();
 }
 
@@ -261,13 +273,7 @@ bindKeyboard({
     if (located) clipboard = located.object;
   },
   duplicate() {
-    const located = selectedId ? findObject(scene, selectedId) : undefined;
-    if (!located) return;
-    const inserted = insertCopy(scene, located.page, located.object);
-    if (!inserted) return;
-    scene = inserted.scene;
-    selectedId = inserted.object.id;
-    render();
+    duplicate(selectedId);
   },
   remove() {
     if (selectedId) remove(selectedId);

@@ -24,6 +24,7 @@ export interface ObjectViewContext {
   onSelect(id: string): void;
   onCommit(object: PdfObject): void;
   onDelete(id: string): void;
+  onDuplicate(id: string): void;
 }
 
 /**
@@ -57,8 +58,19 @@ export function createObjectView(
   removeButton.addEventListener('click', () => context.onDelete(current.id));
   element.append(removeButton);
 
+  const duplicateButton = document.createElement('button');
+  duplicateButton.type = 'button';
+  duplicateButton.className = 'duplicate';
+  duplicateButton.title = 'Dupliquer (Ctrl+D)';
+  duplicateButton.setAttribute('aria-label', 'Dupliquer');
+  duplicateButton.append(duplicateIcon());
+  duplicateButton.addEventListener('click', () => context.onDuplicate(current.id));
+  element.append(duplicateButton);
+
   element.addEventListener('pointerdown', (event) => {
-    if ((event.target as HTMLElement).isContentEditable) return;
+    const target = event.target as HTMLElement;
+    // Handles and action buttons have their own pointerdown handlers.
+    if (target.isContentEditable || target.closest('.handle, button')) return;
     start(event, 'move');
   });
 
@@ -164,6 +176,26 @@ function createBody(object: PdfObject): HTMLElement {
   text.textContent = object.text;
   text.style.font = `${object.size}px/${object.lineHeight} ${FONT_STACK[object.font]}`;
   return text;
+}
+
+/** Two overlapping squares: a glyph would depend on the system font. */
+function duplicateIcon(): SVGSVGElement {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('viewBox', '0 0 16 16');
+  svg.setAttribute('aria-hidden', 'true');
+  for (const [x, y] of [
+    [1.5, 1.5],
+    [5.5, 5.5],
+  ] as const) {
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', String(x));
+    rect.setAttribute('y', String(y));
+    rect.setAttribute('width', '9');
+    rect.setAttribute('height', '9');
+    rect.setAttribute('rx', '1');
+    svg.append(rect);
+  }
+  return svg;
 }
 
 function moved(origin: PdfObject, dx: number, dy: number): PdfObject {
